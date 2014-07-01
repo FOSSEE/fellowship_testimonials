@@ -1,0 +1,173 @@
+<?php 
+    function testimonials_menu() {
+        $items = array();
+        $items["testimonials"] = array(
+            "title" => "Testimonials",
+            "page callback" => "testimonials_display_all",
+            "access arguments" => array("view testimonials"),
+            "type" => MENU_CALLBACK
+        );
+        $items["testimonials/add"] = array(
+            "title" => "Add Testimonials",
+            "page callback" => "testimonials_add_all",
+            "access arguments" => array("manage testimonials"),
+            "type" => MENU_CALLBACK
+        );
+        $items["testimonials/edit"] = array(
+            "title" => "Edit Testimonials",
+            "page callback" => "testimonials_edit_all",
+            "access arguments" => array("manage testimonials"),
+            "type" => MENU_CALLBACK
+        );
+        $items["testimonials/delete"] = array(
+            "title" => "Delete Testimonial",
+            "page callback" => "testimonials_delete_all",
+            "access arguments" => array("manage testimonials"),
+            "type" => MENU_CALLBACK
+        );
+        return $items;
+    }
+
+    function testimonials_perm() {
+        return array(
+            "view testimonials",
+            "manage testimonials",
+        );
+    }
+
+    function testimonials_add_form($form_state, $testimonial_id=0) {
+        $query = "
+            SELECT * FROM testimonials
+            WHERE id = {$testimonial_id}
+        ";
+        $result = db_query($query);
+        $row = db_fetch_object($result);
+
+        $form = array();
+        $form["name"] = array(
+            "#type" => "textfield",
+            "#title" => "Name",
+            "#default_value" => $row->name,
+            "#required" => TRUE
+        );
+        $form["department"] = array(
+            "#type" => "textfield",
+            "#title" => "Department",
+            "#default_value" => $row->department,
+            "#required" => TRUE
+        );
+        $form["university"] = array(
+            "#type" => "textfield",
+            "#title" => "University",
+            "#default_value" => $row->university,
+            "#required" => TRUE
+        );
+        $form["contribution"] = array(
+            "#type" => "textfield",
+            "#title" => "Contribution",
+            "#default_value" => $row->contribution,
+            "#required" => TRUE
+        );
+        $form["reference"] = array(
+            "#type" => "textfield",
+            "#title" => "Reference",
+            "#default_value" => $row->reference,
+            "#required" => TRUE
+        );
+        $form["body"] = array(
+            "#type" => "textarea",
+            "#title" => "Testimonial",
+            "#default_value" => $row->body,
+            "#required" => TRUE
+        );
+        $form["testimonial_id"] = array(
+            "#type" => "hidden",
+            "#value" => $testimonial_id
+        );
+        $form["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit"
+        );
+        return $form;
+    }
+
+    function testimonials_add_form_validate($form, &$form_state) {
+        // for future use
+    }
+
+    function testimonials_add_form_submit($form, &$form_state) {
+        $v = $form_state["values"];
+        if($v["testimonial_id"]) {
+            $query = "
+                UPDATE testimonials SET
+                name = '%s', department = '%s', university = '%s',
+                contribution = '%s', reference = '%s', body = '%s'
+                WHERE id = %d
+            ";
+            $result = db_query($query, 
+                $v["name"], $v["department"], $v["university"],
+                $v["contribution"], $v["reference"], $v["body"],
+                $v["testimonial_id"]
+            );
+        } else {
+            $query = "
+                INSERT INTO testimonials
+                (name, department, university, contribution, reference, body)
+                VALUES
+                ('%s', '%s', '%s', '%s', '%s', '%s')
+                ";
+            $result = db_query($query, 
+                $v["name"], $v["department"], $v["university"],
+                $v["contribution"], $v["reference"], $v["body"]
+            );
+        }
+        if(!$result) {
+            drupal_set_message("Something went wrong, please try again.", "error");
+        } else {
+            drupal_set_message("Testimonial added successfully", "status");
+        }
+    }
+
+    function testimonials_add_all() {
+        $page_content = "";
+        $page_content .= drupal_get_form("testimonials_add_form");
+        return $page_content;
+    }
+
+    function testimonials_edit_all($testimonial_id=0) {
+        $page_content = "";
+        if($testimonial_id){
+            $page_content .= drupal_get_form("testimonials_add_form", $testimonial_id);
+        } else {
+            $query = "
+                SELECT * FROM testimonials
+                ORDER BY time DESC
+                ";
+            $result = db_query($query);
+            $headers = array(
+                "Name", "University", "Action"
+            );
+            $rows = array();
+            while($row = db_fetch_object($result)) {
+                $item = array(
+                    $row->name,
+                    $row->university,
+                    l("Edit", "testimonials/edit/{$row->id}") ." | ".
+                    l("Delete", "testimonials/delete/{$row->id}")
+                );
+                array_push($rows, $item);
+            }
+            $page_content .= theme("table", $headers, $rows);
+        }
+        return $page_content;
+    }
+
+    function testimonials_display_all() {
+        $page_content = "";
+        return $page_content;
+    }
+
+    function testimonials_init() {
+        // for future use
+    }
+?>
