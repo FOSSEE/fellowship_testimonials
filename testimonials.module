@@ -164,10 +164,30 @@
 
     function testimonials_display_all() {
         $page_content = "";
+        $query = "
+            SELECT * FROM testimonials
+            ORDER BY id DESC
+        ";
+        $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM testimonials");
+        
+        $page_content .= "<div id='testimonials-wrapper'>";
+        while($row = db_fetch_object($result)) {
+            $page_content .= "
+                <div class='testimonial'>
+                    {$row->body}
+                    <div class='author'>
+                        - {$row->name}, {$row->department}, {$row->university}<br>
+                        ({$row->contribution}: {$row->reference})
+                    </div>
+                </div>
+            ";
+        }
+        $page_content .= "</div> <!-- /#testimonials-wrapper -->";
+        $page_content .= theme("pager", NULL, 4, 0);
         return $page_content;
     }
 
     function testimonials_init() {
-        // for future use
+        drupal_add_css(drupal_get_path("module", "testimonials") . "/css/testimonials.css");
     }
 ?>
