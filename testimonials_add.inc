@@ -182,12 +182,12 @@ function fellowship_testimonials_add_form($form,$form_state, $testimonial_id = 0
                 );
                 $form['fellows_fieldset'][$i]["institute"] = array(
                     "#type" => "textfield",
-                    "#title" => "Department",
+                    "#title" => "University",
                     "#default_value" => ""
                 );
                 $form['fellows_fieldset'][$i]["place"] = array(
                     "#type" => "textfield",
-                    "#title" => "University",
+                    "#title" => "Place",
                     "#default_value" => ""
                 );
                
