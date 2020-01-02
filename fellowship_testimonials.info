@@ -1,3 +1,4 @@
 name = Testimonials
 description = To manage and display testimonials
-core = 6.x
+core = 7.x
+package = IITB
