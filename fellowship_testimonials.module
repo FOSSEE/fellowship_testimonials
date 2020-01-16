@@ -15,7 +15,7 @@
             'file' => 'testimonials_add.inc'
         );
         $items["fellowship-testimonials/edit"] = array(
-            "title" => "Edit fellowship_testimonials",
+            "title" => "Edit fellowship testimonials",
             "page callback" => "fellowship_testimonials_edit_all",
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK,
