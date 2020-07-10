@@ -1,11 +1,29 @@
 <?php 
     function fellowship_testimonials_menu() {
         $items = array();
-        $items["fellowship-testimonials"] = array(
+        /*$items["fellowship-testimonials"] = array(
             "title" => "Testimonials by FOSSEE Summer Fellows",
             "page callback" => "fellowship_testimonials_display_all",
             "access arguments" => array("view fellowship_testimonials"),
             "type" => MENU_CALLBACK
+        );*/
+        $items["fellowship-testimonials"] = array(
+        "title" => "Fellowship testimonials",
+        "page callback" => "drupal_get_form",
+        "page arguments" => array(
+            "fellowship_testimonials_display_form"
+        ),
+        "access arguments" => array(
+            "view fellowship_testimonials"
+        ),
+        "type" => MENU_NORMAL_ITEM
+        );
+        $items["fellowship-testimonials/year-wise"] = array( 
+            "title" => "Testimonials by FOSSEE Summer Fellows year wise",
+            "page callback" => "fellowship_testimonials_display_year_wise",
+            "access arguments" => array("view fellowship_testimonials"),
+            "type" => MENU_CALLBACK,
+            'file' => 'testimonials_year_wise.inc'
         );
         $items["fellowship-testimonials/add"] = array(
             "title" => "Add fellowship testimonials",
@@ -19,7 +37,7 @@
             "page callback" => "fellowship_testimonials_edit_all",
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK,
-            'file' => 'testimonials_add.inc'
+            'file' => 'testimonials_edit.inc'
         );
         $items["fellowship-testimonials/delete"] = array(
             "title" => "Delete Testimonial",
@@ -42,7 +60,7 @@
             ),
         );
     }
-    function fellowship_testimonials_display_all() {
+    function get_video_testimonials() {
         $page_content = "";
         /*$query = "
             SELECT * FROM fellowship_testimonials
@@ -51,9 +69,10 @@
         $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM fellowship_testimonials");*/
          $query = db_select('fellowship_testimonials');
          $query->fields('fellowship_testimonials');
+         $query->condition('testimonial_type', 'V');
          $query->orderBy('year', 'DESC');
-         $result = $query->extend('PagerDefault')->limit(3)->execute();
-        
+         //$result = $query->extend('PagerDefault')->limit(3)->execute();
+        $result = $query->execute();
         $page_content .= "<div id='fellowship_testimonials-wrapper'>";
         while($row = $result->fetchObject()) {
             $speakerquery = db_select('fellows');
@@ -79,7 +98,66 @@
         return $page_content;
     }
 
+    function get_text_testimonials() {
+        $page_content = "";
+        /*$query = "
+            SELECT * FROM fellowship_testimonials
+            ORDER BY id DESC
+        ";
+        $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM fellowship_testimonials");*/
+         $query = db_select('fellowship_testimonials');
+         $query->fields('fellowship_testimonials');
+         $query->condition('testimonial_type', 'T');
+         $query->orderBy('year', 'DESC');
+         $result = $query->extend('PagerDefault')->limit(3)->execute();
+        
+        $page_content .= "<div id='fellowship_testimonials-wrapper'>";
+        while($row = $result->fetchObject()) {
+            $speakerquery = db_select('fellows');
+            $speakerquery->fields('fellows');
+            $speakerquery->condition('t_id', $row->id);
+            $speakerresult = $speakerquery->execute();
+           $speakerrow = $speakerresult->fetchObject();
+            $page_content .= "
+              <div class='container-testimonial'> <p>{$row->testimonial_text}</p> ";
+ //while($speakerrow = $speakerresult->fetchObject()){
+        $page_content .= "<br><p style='float:right'><span>{$speakerrow->name}</span><br>{$speakerrow->institute}, {$speakerrow->place}<br>";
+   // }
+            $page_content .= "{$row->fellowship_task}
+            <br>{$row->year}</p></div>";
+            
+    }
+        $page_content .= "</div> <!-- /#fellowship_testimonials-wrapper -->";
+        //$page_content .= theme("pager", NULL, 4, 0);
+        $page_content .= theme('pager', array('header' => NULL, 'rows' => 4 ));
+        return $page_content;
+    }
+
     function fellowship_testimonials_init() {
         drupal_add_css(drupal_get_path("module", "fellowship_testimonials") . "/css/fellowship_testimonials.css");
     }
-?>
+function fellowship_testimonials_display_form($form, $form_state){
+    $form = array();
+    $form['tab_content'] = array(
+        '#type' => 'item',
+        '#markup' => '<ul class="nav nav-tabs">                       
+                        <li class="active"><a data-toggle="tab" href="#fellowship-testimonials-text">Text</a></li>
+                         <li><a data-toggle="tab" href="#fellowship-testimonials-video">Video</a></li>
+                      </ul>
+        <div class="tab-content">
+
+        <div id="fellowship-testimonials-text"class="tab-pane fade in active">' . get_text_testimonials() . '
+        </div>
+     
+        <div id="fellowship-testimonials-video" class="tab-pane fade ">' . get_video_testimonials() . '
+        </div>   
+
+ </div>'
+    );
+    $form['lastdiv'] = array(
+        '#type' => 'item',
+        '#markup' => '',
+        '#suffix' => '</div></div>'
+    );
+    return $form;
+}
