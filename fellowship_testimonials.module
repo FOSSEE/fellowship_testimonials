@@ -109,8 +109,8 @@
          $query->fields('fellowship_testimonials');
          $query->condition('testimonial_type', 'T');
          $query->orderBy('year', 'DESC');
-         $result = $query->extend('PagerDefault')->limit(3)->execute();
-        
+         //$result = $query->extend('PagerDefault')->limit(3)->execute();
+        $result = $query->execute();
         $page_content .= "<div id='fellowship_testimonials-wrapper'>";
         while($row = $result->fetchObject()) {
             $speakerquery = db_select('fellows');

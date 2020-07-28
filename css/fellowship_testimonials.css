@@ -32,10 +32,10 @@
   padding: 16px;
   margin: 10px 0;
 }
-video {
+/*video {
     max-width: 100%;
     height: auto !important;
-}
+}*/
 .container-testimonial::after {
   content: "";
   clear: both;
@@ -45,6 +45,8 @@ video {
 .container-testimonial video {
   float: left;
   margin-right: 20px;
+  width: 500px !important;
+  height: 300px !important;
 }
 
 .container-testimonial span {
