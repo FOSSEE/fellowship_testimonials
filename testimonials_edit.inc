@@ -22,7 +22,6 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
 			),
             "#default_value" => $row->year,
             "#required" => TRUE,
-            '#disabled' => TRUE,
         );
         $form["fellowship_task"] = array(
             "#type" => "textfield",
@@ -32,7 +31,6 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
 			),
             "#default_value" => $row->fellowship_task,
             "#required" => TRUE,
-            '#disabled' => TRUE,
         );
         $form["opt_text_or_video"] = array(
             "#type" => 'select',

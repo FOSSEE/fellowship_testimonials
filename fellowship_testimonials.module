@@ -123,8 +123,7 @@
  //while($speakerrow = $speakerresult->fetchObject()){
         $page_content .= "<br><p style='float:right'><span>{$speakerrow->name}</span><br>{$speakerrow->institute}, {$speakerrow->place}<br>";
    // }
-            $page_content .= "{$row->fellowship_task}
-            <br>{$row->year}</p></div>";
+            $page_content .= "{$row->fellowship_task}, FOSSEE Summer Fellowship {$row->year}</p></div>";
             
     }
         $page_content .= "</div> <!-- /#fellowship_testimonials-wrapper -->";
