@@ -121,7 +121,7 @@
             $page_content .= "
               <div class='container-testimonial'> <p>{$row->testimonial_text}</p> ";
  //while($speakerrow = $speakerresult->fetchObject()){
-        $page_content .= "<br><p style='float:right'><span>{$speakerrow->name}</span><br>{$speakerrow->institute}, {$speakerrow->place}<br>";
+        $page_content .= "<br><p style='text-align:right'><span>{$speakerrow->name}</span><br>{$speakerrow->institute}, {$speakerrow->place}<br>";
    // }
             $page_content .= "{$row->fellowship_task}, FOSSEE Summer Fellowship {$row->year}</p></div>";
             
