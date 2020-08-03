@@ -73,6 +73,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
 			),
             "#default_value" => $row->testimonial_video,
             '#size' => 255,
+            '#maxlength' => 255,
             '#prefix' => '<div id="testimonial-video">',
             '#suffix' => '</div>',
             //"#required" => TRUE,
@@ -289,7 +290,7 @@ function fellows_add_more_remove_one($form, &$form_state) {
                         'place' => $v['fellows_fieldset'][$i]["place"]
                     ));
                     $query->condition('f_id', $v['fellows_fieldset'][$i]["f_id"]);
-                    $result = $query->execute();
+                    $fellows_result = $query->execute();
                     if ($result != 0) {
                         $fellowsupload++;
                     }
