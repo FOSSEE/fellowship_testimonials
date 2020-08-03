@@ -77,7 +77,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
             '#attributes' => array(
 				'placeholder' => t('Copy paste the static url of the video, for eg: https://static.fossee.in/fossee/videos/FOSSEE_intern_Video/DSC_0006.m4v')
 			),
-            '#size' => 90,
+            '#size' => 255,
             '#prefix' => '<div id="testimonial-video">',
             '#suffix' => '</div>',
             //"#required" => TRUE,
