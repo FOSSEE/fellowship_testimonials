@@ -72,7 +72,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
 				'placeholder' => t('Copy paste the static url of the video, for eg: https://static.fossee.in/fossee/videos/FOSSEE_intern_Video/DSC_0006.m4v')
 			),
             "#default_value" => $row->testimonial_video,
-            '#size' => 90,
+            '#size' => 255,
             '#prefix' => '<div id="testimonial-video">',
             '#suffix' => '</div>',
             //"#required" => TRUE,
