@@ -14,9 +14,20 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
          $result = $query->execute();
          $row = $result->fetchObject();
         $form = array();
+        $form["activity"] = array(
+            "#type" => 'select',
+            "#title" => t('Select Activity'),
+            "#options" => array(
+                'S' => 'Semster-long internship',
+                'F' => 'Fossee Summer fellowship'
+                ),
+            "#required" => TRUE,
+            '#default_value' => $row->activity,
+            '#disabled' => TRUE,
+        );
         $form["fellowship_year"] = array(
             "#type" => "textfield",
-            "#title" => "Enter the fellowship year participated by the fellow(s)",
+            "#title" => "Enter the year of participations",
             '#attributes' => array(
 				'placeholder' => t('For eg: 2019')
 			),
@@ -25,7 +36,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
         );
         $form["fellowship_task"] = array(
             "#type" => "textfield",
-            "#title" => "Enter the fellowship task done by the fellow(s)",
+            "#title" => "Enter floss catergory",
             '#attributes' => array(
 				'placeholder' => t('For eg: Python, DWSIM, eSim etc')
 			),
@@ -34,7 +45,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
         );
         $form["opt_text_or_video"] = array(
             "#type" => 'select',
-            "#title" => t('Select the type of testimonial'),
+            "#title" => t('Select type of experience'),
             "#options" => array(
                 'T' => 'Text',
                 'V' => 'Video'
@@ -50,7 +61,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
         $form["testimonial_text"] = array(
             "#type" => "text_format",
             '#format' => 'full_html',
-            "#title" => "Testimonial text",
+            "#title" => "Enter the experience in text format",
             "#default_value" => $row->testimonial_text,
             '#prefix' => '<div id="testimonial-text">',
             '#suffix' => '</div>',
@@ -67,7 +78,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
         else{
         $form["testimonial_video"] = array(
             "#type" => "textfield",
-            "#title" => "Testimonial Video",
+            "#title" => "URL to experience video",
             '#attributes' => array(
 				'placeholder' => t('Copy paste the static url of the video, for eg: https://static.fossee.in/fossee/videos/FOSSEE_intern_Video/DSC_0006.m4v')
 			),
@@ -108,7 +119,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
                 $temp = $i;
                 $form['fellows_fieldset'][$i]["s_text"] = array(
                     "#type" => "item",
-                    "#markup" => "<h4><label>fellows : " . ($temp + 1) . "</label></h4>"
+                    "#markup" => "<h4><label>Pacticipant : " . ($temp + 1) . "</label></h4>"
                 );
                 $form['fellows_fieldset'][$i]["f_id"] = array(
                     "#type" => "hidden",
@@ -321,11 +332,12 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
             $result = $query->execute();
 
                         $headers = array(
-                "Name", "Institute", "Type", "Action"
+                "Name", "Institute", "Activity Type", "Type", "Action"
             );
 
             $rows = array();
-            while($row = $result->fetchObject()) {
+            while($row = $result->fetchObject()) 
+            {
               $speakerquery = db_query("SELECT GROUP_CONCAT(name separator ', ') as name, GROUP_CONCAT(institute separator ', ') as institute FROM fellows WHERE t_id = :t_id GROUP BY t_id", array(
                     ":t_id" => $row->id
                 ));
@@ -347,8 +359,9 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
                 $item = array(
                     $fellow_name,
                     $institute,
+                    $row -> activity,
                     $testimonial_type,
-                    l("Edit", "fellowship-testimonials/edit/{$row->id}")
+                    l("Edit", "intership-experience/edit/{$row->id}")
                    // l("Delete", "fellowship-testimonials/delete/{$row->id}")
                 );
                 array_push($rows, $item);

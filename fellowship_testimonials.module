@@ -7,8 +7,8 @@
             "access arguments" => array("view fellowship_testimonials"),
             "type" => MENU_CALLBACK
         );*/
-        $items["fellowship-testimonials"] = array(
-        "title" => "Fellowship testimonials",
+        $items["intership-experience"] = array(
+        "title" => "Intership Experience",
         "page callback" => "drupal_get_form",
         "page arguments" => array(
             "fellowship_testimonials_display_form"
@@ -18,29 +18,29 @@
         ),
         "type" => MENU_NORMAL_ITEM
         );
-        $items["fellowship-testimonials/year-wise"] = array( 
+        $items["intership-experience/year-wise"] = array( 
             "title" => "Testimonials by FOSSEE Summer Fellows year wise",
-            "page callback" => "fellowship_testimonials_display_year_wise",
+            "page callback" => "intership-experience_display_year_wise",
             "access arguments" => array("view fellowship_testimonials"),
             "type" => MENU_CALLBACK,
             'file' => 'testimonials_year_wise.inc'
         );
-        $items["fellowship-testimonials/add"] = array(
-            "title" => "Add fellowship testimonials",
+        $items["intership-experience/add"] = array(
+            "title" => "Add intership-experience",
             "page callback" => "fellowship_testimonials_add_all",
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK,
             'file' => 'testimonials_add.inc'
         );
-        $items["fellowship-testimonials/edit"] = array(
-            "title" => "Edit fellowship testimonials",
+        $items["intership-experience/edit"] = array(
+            "title" => "Edit intership-experience",
             "page callback" => "fellowship_testimonials_edit_all",
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK,
             'file' => 'testimonials_edit.inc'
         );
-        $items["fellowship-testimonials/delete"] = array(
-            "title" => "Delete Testimonial",
+        $items["intership-experience/delete"] = array(
+            "title" => "Delete intership-experience",
             "page callback" => "fellowship_testimonials_delete_all",
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK
@@ -86,10 +86,11 @@
  <source src={$row->testimonial_video} type='video/mp4'>
                                 </video> ";
  while($speakerrow = $speakerresult->fetchObject()){
-        $page_content .= "<p><span>{$speakerrow->name}</span><br>Institute: {$speakerrow->institute}, {$speakerrow->place}<br><br><span style='margin-right:0;'>";
+        $page_content .= "<p><span>{$speakerrow->name}</span><br>Institute: {$speakerrow->institute}, {$speakerrow->place}<br><br><span style='margin-right:0; size: 10px;'>";
     }
-            $page_content .= "Fellowship task</span>: {$row->fellowship_task}
-            <br><br><span>Fellowship Year</span>: {$row->year}</p></div>";
+            $page_content .= "Activity name</span>: {$row->activity}
+            <br><br><span>Floss</span>: {$row->fellowship_task}
+            <br><br><span>Year of participation</span>: {$row->year}</p></div>";
             
     }
         $page_content .= "</div> <!-- /#fellowship_testimonials-wrapper -->";
@@ -123,7 +124,7 @@
  //while($speakerrow = $speakerresult->fetchObject()){
         $page_content .= "<br><p style='text-align:right'><span>{$speakerrow->name}</span><br>{$speakerrow->institute}, {$speakerrow->place}<br>";
    // }
-            $page_content .= "{$row->fellowship_task}, FOSSEE Summer Fellowship {$row->year}</p></div>";
+            $page_content .= "{$row->fellowship_task}, {$row->activity}, {$row->year}</p></div>";
             
     }
         $page_content .= "</div> <!-- /#fellowship_testimonials-wrapper -->";
@@ -140,15 +141,15 @@ function fellowship_testimonials_display_form($form, $form_state){
     $form['tab_content'] = array(
         '#type' => 'item',
         '#markup' => '<ul class="nav nav-tabs">                       
-                        <li class="active"><a data-toggle="tab" href="#fellowship-testimonials-text">Text</a></li>
-                         <li><a data-toggle="tab" href="#fellowship-testimonials-video">Video</a></li>
+                        <li class="active"><a data-toggle="tab" href="#intership-experience-text">Text</a></li>
+                         <li><a data-toggle="tab" href="#intership-experience-video">Video</a></li>
                       </ul>
         <div class="tab-content">
 
-        <div id="fellowship-testimonials-text"class="tab-pane fade in active">' . get_text_testimonials() . '
+        <div id="intership-experience-text"class="tab-pane fade in active">' . get_text_testimonials() . '
         </div>
      
-        <div id="fellowship-testimonials-video" class="tab-pane fade ">' . get_video_testimonials() . '
+        <div id="intership-experience-video" class="tab-pane fade ">' . get_video_testimonials() . '
         </div>   
 
  </div>'
