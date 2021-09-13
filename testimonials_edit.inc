@@ -313,7 +313,7 @@ function fellows_add_more_remove_one($form, &$form_state) {
         } else {
             drupal_set_message("Testimonial updated successfully", "status");
         }
-        drupal_goto('intership-experience/edit');
+        drupal_goto('internship-experiences/edit');
     }
 
 function fellowship_testimonials_edit_all($testimonial_id=0) {
@@ -361,7 +361,7 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
                     $institute,
                     $row -> activity,
                     $testimonial_type,
-                    l("Edit", "intership-experience/edit/{$row->id}")
+                    l("Edit", "internship-experiences/edit/{$row->id}")
                    // l("Delete", "fellowship-testimonials/delete/{$row->id}")
                 );
                 array_push($rows, $item);

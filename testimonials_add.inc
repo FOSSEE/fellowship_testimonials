@@ -272,5 +272,5 @@ function fellows_add_more_remove_one($form, &$form_state) {
         } else {
             drupal_set_message("Testimonial added successfully", "status");
         }
-        drupal_goto('intership-experience/edit');
+        drupal_goto('internship-experiences/edit');
     }
