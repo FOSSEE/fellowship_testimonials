@@ -86,9 +86,9 @@
  <source src={$row->testimonial_video} type='video/mp4'>
                                 </video> ";
  while($speakerrow = $speakerresult->fetchObject()){
-        $page_content .= "<p><span>{$speakerrow->name}</span><br>Institute: {$speakerrow->institute}, {$speakerrow->place}<br><br><span style='margin-right:0; size: 10px;'>";
+        $page_content .= "<p><span>{$speakerrow->name}</span><br>Institute: {$speakerrow->institute}, {$speakerrow->place}<br><br><span style='margin-right:0; size: 20px;'>";
     }
-            $page_content .= "Activity name</span>: {$row->activity}
+            $page_content .= "{$row->activity}
             <br><br><span>Floss</span>: {$row->fellowship_task}
             <br><br><span>Year of participation</span>: {$row->year}</p></div>";
             

@@ -23,7 +23,7 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
                 ),
             "#required" => TRUE,
             '#default_value' => $row->activity,
-            '#disabled' => TRUE,
+            //'#disabled' => TRUE,
         );
         $form["fellowship_year"] = array(
             "#type" => "textfield",
@@ -313,7 +313,7 @@ function fellows_add_more_remove_one($form, &$form_state) {
         } else {
             drupal_set_message("Testimonial updated successfully", "status");
         }
-        drupal_goto('fellowship-testimonials/edit');
+        drupal_goto('intership-experience/edit');
     }
 
 function fellowship_testimonials_edit_all($testimonial_id=0) {
@@ -327,12 +327,12 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
         } else {
             $query = db_select('fellowship_testimonials');
             $query->fields('fellowship_testimonials');
-           // $query->orderBy('time', 'DESC');
+            $query->orderBy('id', DESC);
             //$query->condition('id', $speakerrow->t_id);
             $result = $query->execute();
 
                         $headers = array(
-                "Name", "Institute", "Activity Type", "Type", "Action"
+                "Name", "Institute", " ", "Type", "Action"
             );
 
             $rows = array();
