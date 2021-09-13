@@ -18,8 +18,8 @@ function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 
             "#type" => 'select',
             "#title" => t('Select Activity'),
             "#options" => array(
-                'S' => 'Semster-long internship',
-                'F' => 'Fossee Summer fellowship'
+                'Semster-long internship' => 'Semster-long internship',
+                'Fossee Summer fellowship' => 'Fossee Summer fellowship'
                 ),
             "#required" => TRUE,
             '#default_value' => $row->activity,
