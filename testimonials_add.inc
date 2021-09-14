@@ -222,9 +222,9 @@ function fellows_add_more_remove_one($form, &$form_state) {
             $query = "
                 INSERT INTO fellowship_testimonials(activity, year, fellowship_task, testimonial_video, testimonial_type)
                 VALUES (:activity, :year, :fellowship_task, :testimonial_video, :testimonial_type)";
-            $args = array( 
+            $args = array(
+                ':activity' => $v["activity"], 
                 ':year' => $v["fellowship_year"],
-                ':activity' => $v["activity"],
                 ':fellowship_task' => $v["fellowship_task"],
                 ':testimonial_video' => $v["testimonial_video"],
                 ':testimonial_type' => 'V'
@@ -234,9 +234,9 @@ function fellows_add_more_remove_one($form, &$form_state) {
                 $query = "
                 INSERT INTO fellowship_testimonials(activity, year, fellowship_task, testimonial_text, testimonial_text_format, testimonial_type)
                 VALUES (:activity, :year, :fellowship_task, :testimonial_text, :testimonial_text_format, :testimonial_type)";
-            $args = array( 
+            $args = array(
+                ':activity' => $v["activity"], 
                 ':year' => $v["fellowship_year"],
-                ':activity' => $v["activity"],
                 ':fellowship_task' => $v["fellowship_task"],
                 ':testimonial_text' => $v["testimonial_text"]["value"],
                 ':testimonial_text_format' => $v["testimonial_text"]["format"],
@@ -270,7 +270,7 @@ function fellows_add_more_remove_one($form, &$form_state) {
         if(!$result) {
             drupal_set_message("Something went wrong, please try again.", "error");
         } else {
-            drupal_set_message("Testimonial added successfully", "status");
+            drupal_set_message("Internship Experiences added successfully", "status");
         }
         drupal_goto('internship-experiences/edit');
     }

@@ -5,7 +5,7 @@ function fellowship_testimonials_edit() {
         $page_content .= drupal_render($fellowship_testimonials_edit_form);
         return $page_content;
     }
-function fellowship_testimonials_edit_form($form,$form_state, $testimonial_id = 0) {
+function fellowship_testimonials_edit_form($form, &$form_state, &$testimonial_id = 0) {
          $testimonial_id = arg(2);
          //var_dump($testimonial_id);die;
          $query = db_select('fellowship_testimonials');
@@ -267,42 +267,45 @@ function fellows_add_more_remove_one($form, &$form_state) {
     }
 
     function fellowship_testimonials_edit_form_submit($form, &$form_state) {
-        $v = $form_state["values"];
+        $v = $form_state['values'];
             if($v['opt_text_or_video'] == 'V'){
             $query = db_update('fellowship_testimonials');
             $query->fields(array(
-                'year' => $v["fellowship_year"],
-                'fellowship_task' => $v["fellowship_task"],
-                'testimonial_video' => $v["testimonial_video"]
+                 'activity' => $v['activity'],
+                 'year' => $v['fellowship_year'],
+                 'fellowship_task' => $v['fellowship_task'],
+                 'testimonial_video' => $v['testimonial_video']
             ));
         }
+
         else if($v['opt_text_or_video'] == 'T'){
             $query = db_update('fellowship_testimonials');
             $query->fields(array(
-                'year' => $v["fellowship_year"],
-                'fellowship_task' => $v["fellowship_task"],
-                'testimonial_text' => $v["testimonial_text"],
-                'testimonial_text_format' => $v["testimonial_text_format"]
+                'activity' => $v['activity'],
+                'year' => $v['fellowship_year'],
+                'fellowship_task' => $v['fellowship_task'],
+                'testimonial_text' => $v['testimonial_text']['value'],
+                'testimonial_text_format' => $v['testimonial_text']['format']
             ));
         }
-            $query->condition('id', $v["testimonial_id"]);
-            $result = $query->execute();
+            $query->condition('id', $v['testimonial_id']);
+            $result  = $query -> execute();
            
             $fellowsupload = 0;
-            for ($i = 0; $i <= $v["fellows_count"]; $i++) {
-                $f_id=$v['fellows_fieldset'][$i]["f_id"];
+            for ($i = 0; $i <= $v['fellows_count']; $i++) {
+                $f_id=$v['fellows_fieldset'][$i]['f_id'];
             //var_dump($f_id);die;
             if ($f_id != "") {
-                if ($v['fellows_fieldset'][$i]["fellowname"] != "") {
+                if ($v['fellows_fieldset'][$i]['fellowname'] != "") {
                     $query = db_update('fellows');
                    $query->fields(array(
-                        'name' => $v['fellows_fieldset'][$i]["fellowname"],
-                        'institute' => $v['fellows_fieldset'][$i]["institute"],
-                        'place' => $v['fellows_fieldset'][$i]["place"]
+                        'name' => $v['fellows_fieldset'][$i]['fellowname'],
+                        'institute' => $v['fellows_fieldset'][$i]['institute'],
+                        'place' => $v['fellows_fieldset'][$i]['place']
                     ));
-                    $query->condition('f_id', $v['fellows_fieldset'][$i]["f_id"]);
-                    $fellows_result = $query->execute();
-                    if ($result != 0) {
+                    $query->condition('f_id', $v['fellows_fieldset'][$i]['f_id']);
+                    $fellows_result = $query -> execute();
+                    if ($fellows_result != 0) {
                         $fellowsupload++;
                     }
                 }
@@ -311,7 +314,7 @@ function fellows_add_more_remove_one($form, &$form_state) {
         if(!$result) {
             drupal_set_message("Something went wrong, please try again.", "error");
         } else {
-            drupal_set_message("Testimonial updated successfully", "status");
+            drupal_set_message("Internship Experiences updated successfully", "status");
         }
         drupal_goto('internship-experiences/edit');
     }
