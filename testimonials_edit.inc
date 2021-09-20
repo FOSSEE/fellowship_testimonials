@@ -262,11 +262,11 @@ function fellows_add_more_remove_one($form, &$form_state) {
     $form_state['rebuild'] = TRUE;
 }
 
-    function fellowship_testimonials_edit_form_validate($form, &$form_state) {
+function fellowship_testimonials_edit_form_validate($form, &$form_state) {
         // for future use
     }
 
-    function fellowship_testimonials_edit_form_submit($form, &$form_state) {
+function fellowship_testimonials_edit_form_submit($form, &$form_state) {
         $v = $form_state['values'];
             if($v['opt_text_or_video'] == 'V'){
             $query = db_update('fellowship_testimonials');
@@ -304,18 +304,20 @@ function fellows_add_more_remove_one($form, &$form_state) {
                         'place' => $v['fellows_fieldset'][$i]['place']
                     ));
                     $query->condition('f_id', $v['fellows_fieldset'][$i]['f_id']);
-                    $fellows_result = $query -> execute();
-                    if ($fellows_result != 0) {
+                    $result = $query -> execute();
+                    if ($result != 0) {
                         $fellowsupload++;
                     }
                 }
             }         
         }
-        if(!$result) {
+       /* if(!$result) {
             drupal_set_message("Something went wrong, please try again.", "error");
-        } else {
+        } 
+        else {
             drupal_set_message("Internship Experiences updated successfully", "status");
-        }
+        }*/
+        drupal_set_message("Internship Experiences updated successfully", "status");
         drupal_goto('internship-experiences/edit');
     }
 
