@@ -18,8 +18,8 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
             "#type" => 'select',
             "#title" => t('Select Activity'),
             "#options" => array(
-                'Semster-long internship' => 'Semster-long internship',
-                'Fossee Summer fellowship' => 'Fossee Summer fellowship'
+                'Semester Long Internship' => 'Semester Long Internship',
+                'FOSSEE Summer Fellowship' => 'FOSSEE Summer Fellowship'
                 ),
             "#required" => TRUE,
         );

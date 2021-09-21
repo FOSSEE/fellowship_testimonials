@@ -5,9 +5,7 @@ function fellowship_testimonials_edit() {
         $page_content .= drupal_render($fellowship_testimonials_edit_form);
         return $page_content;
     }
-function fellowship_testimonials_edit_form($form, &$form_state, &$testimonial_id = 0) {
-         $testimonial_id = arg(2);
-         //var_dump($testimonial_id);die;
+function fellowship_testimonials_edit_form($form, $form_state, $testimonial_id = 0) {
          $query = db_select('fellowship_testimonials');
          $query->fields('fellowship_testimonials');
          $query->condition('id', $testimonial_id);
@@ -18,8 +16,8 @@ function fellowship_testimonials_edit_form($form, &$form_state, &$testimonial_id
             "#type" => 'select',
             "#title" => t('Select Activity'),
             "#options" => array(
-                'Semster-long internship' => 'Semster-long internship',
-                'Fossee Summer fellowship' => 'Fossee Summer fellowship'
+                'Semester Long Internship' => 'Semester Long Internship',
+                'FOSSEE Summer Fellowship' => 'FOSSEE Summer Fellowship'
                 ),
             "#required" => TRUE,
             '#default_value' => $row->activity,
