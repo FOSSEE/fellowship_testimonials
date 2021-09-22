@@ -335,7 +335,7 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
             $result = $query->execute();
 
                         $headers = array(
-                "Name", "Institute", " ", "Type", "Action"
+                "Name", "Institute", "Activity Name", "Type", "Action"
             );
 
             $rows = array();
