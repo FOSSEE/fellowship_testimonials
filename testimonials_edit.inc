@@ -302,20 +302,19 @@ function fellowship_testimonials_edit_form_submit($form, &$form_state) {
                         'place' => $v['fellows_fieldset'][$i]['place']
                     ));
                     $query->condition('f_id', $v['fellows_fieldset'][$i]['f_id']);
-                    $result = $query -> execute();
-                    if ($result != 0) {
+                    $fellowresult = $query -> execute();
+                    if ($fellowresult != 0) {
                         $fellowsupload++;
                     }
                 }
             }         
         }
-       /* if(!$result) {
+        if((!$result) && (!$fellowresult)) {
             drupal_set_message("Something went wrong, please try again.", "error");
         } 
         else {
             drupal_set_message("Internship Experiences updated successfully", "status");
-        }*/
-        drupal_set_message("Internship Experiences updated successfully", "status");
+        }
         drupal_goto('internship-experiences/edit');
     }
 
