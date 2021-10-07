@@ -14,9 +14,18 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
          $result = $query->execute();
          $row = $result->fetchObject();
         $form = array();
+        $form["activity"] = array(
+            "#type" => 'select',
+            "#title" => t('Select Activity'),
+            "#options" => array(
+                'Semester Long Internship' => 'Semester Long Internship',
+                'FOSSEE Summer Fellowship' => 'FOSSEE Summer Fellowship'
+                ),
+            "#required" => TRUE,
+        );
         $form["fellowship_year"] = array(
             "#type" => "textfield",
-            "#title" => "Enter the fellowship year participated by the fellow(s)",
+            "#title" => "Enter the year of participations",
             '#attributes' => array(
 				'placeholder' => t('For eg: 2019')
 			),
@@ -24,7 +33,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
         );
         $form["fellowship_task"] = array(
             "#type" => "textfield",
-            "#title" => "Enter the fellowship task done by the fellow(s)",
+            "#title" => "Enter floss catergory",
             '#attributes' => array(
 				'placeholder' => t('For eg: Python, DWSIM, eSim etc')
 			),
@@ -32,7 +41,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
         );
         $form["opt_text_or_video"] = array(
             "#type" => 'select',
-            "#title" => t('Select the type of testimonial'),
+            "#title" => t('Select type of experience'),
             "#options" => array(
                 'T' => 'Text',
                 'V' => 'Video'
@@ -59,7 +68,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
         $form["testimonial_text"] = array(
             "#type" => "text_format",
             '#format' => 'full_html',
-            "#title" => "Testimonial text",
+            "#title" => "Experience in text format",
             '#prefix' => '<div id="testimonial-text">',
             '#suffix' => '</div>',
            // "#required" => TRUE,
@@ -73,7 +82,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
         );
         $form["testimonial_video"] = array(
             "#type" => "textfield",
-            "#title" => "Testimonial Video",
+            "#title" => "URL to experience video",
             '#attributes' => array(
 				'placeholder' => t('Copy paste the static url of the video, for eg: https://static.fossee.in/fossee/videos/FOSSEE_intern_Video/DSC_0006.m4v')
 			),
@@ -105,7 +114,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
                 $temp = $i;
                 $form['fellows_fieldset'][$i]["s_text"] = array(
                     "#type" => "item",
-                    "#markup" => "<h4><label>fellows : " . ($temp + 1) . "</label></h4>"
+                    "#markup" => "<h4><label>Pacticipant : " . ($temp + 1) . "</label></h4>"
                 );
                 $form['fellows_fieldset'][$i]["fellowname"] = array(
                     "#type" => "textfield",
@@ -130,7 +139,7 @@ function fellowship_testimonials_add_form($form,$form_state, $no_js_use = FALSE,
             );
             $form['fellows_fieldset']['add_fellows'] = array(
                 '#type' => 'submit',
-                '#value' => t('Add fellow'),
+                '#value' => t('Add Pacticipant'),
                 '#limit_validation_errors' => array(),
                 '#submit' => array(
                     'fellows_add_more_add_one'
@@ -211,9 +220,10 @@ function fellows_add_more_remove_one($form, &$form_state) {
        
             if($v['opt_text_or_video'] == 'V'){
             $query = "
-                INSERT INTO fellowship_testimonials(year, fellowship_task, testimonial_video, testimonial_type)
-                VALUES (:year, :fellowship_task, :testimonial_video, :testimonial_type)";
-            $args = array( 
+                INSERT INTO fellowship_testimonials(activity, year, fellowship_task, testimonial_video, testimonial_type)
+                VALUES (:activity, :year, :fellowship_task, :testimonial_video, :testimonial_type)";
+            $args = array(
+                ':activity' => $v["activity"], 
                 ':year' => $v["fellowship_year"],
                 ':fellowship_task' => $v["fellowship_task"],
                 ':testimonial_video' => $v["testimonial_video"],
@@ -222,9 +232,10 @@ function fellows_add_more_remove_one($form, &$form_state) {
             }
             else if($v['opt_text_or_video'] == 'T'){
                 $query = "
-                INSERT INTO fellowship_testimonials(year, fellowship_task, testimonial_text, testimonial_text_format, testimonial_type)
-                VALUES (:year, :fellowship_task, :testimonial_text, :testimonial_text_format, :testimonial_type)";
-            $args = array( 
+                INSERT INTO fellowship_testimonials(activity, year, fellowship_task, testimonial_text, testimonial_text_format, testimonial_type)
+                VALUES (:activity, :year, :fellowship_task, :testimonial_text, :testimonial_text_format, :testimonial_type)";
+            $args = array(
+                ':activity' => $v["activity"], 
                 ':year' => $v["fellowship_year"],
                 ':fellowship_task' => $v["fellowship_task"],
                 ':testimonial_text' => $v["testimonial_text"]["value"],
@@ -259,7 +270,7 @@ function fellows_add_more_remove_one($form, &$form_state) {
         if(!$result) {
             drupal_set_message("Something went wrong, please try again.", "error");
         } else {
-            drupal_set_message("Testimonial added successfully", "status");
+            drupal_set_message("Internship Experiences added successfully", "status");
         }
-        drupal_goto('fellowship-testimonials/edit');
+        drupal_goto('internship-experiences/edit');
     }

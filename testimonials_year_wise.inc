@@ -1,5 +1,5 @@
 <?php
-function fellowship_testimonials_display_year_wise($year) {
+function fellowship_testimonials_display_year_wise() {
         $page_content = "";
         /*$query = "
             SELECT * FROM fellowship_testimonials
