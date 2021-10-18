@@ -375,7 +375,7 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
                     $row -> activity,
                     $testimonial_type,
                     l("Edit", "internship-experiences/edit/{$row->id}")
--                   // l("Delete", "fellowship-testimonials/delete/{$row->id}")
+                   // l("Delete", "fellowship-testimonials/delete/{$row->id}")
 
                 );
                 array_push($rows, $item);
