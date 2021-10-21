@@ -45,6 +45,7 @@
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK
         );
+
         return $items;
     }
 
@@ -69,6 +70,7 @@
         $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM fellowship_testimonials");*/
          $query = db_select('fellowship_testimonials');
          $query->fields('fellowship_testimonials');
+         $query->condition('hidden', '0');         
          $query->condition('testimonial_type', 'V');
          $query->orderBy('year', 'DESC');
          //$result = $query->extend('PagerDefault')->limit(3)->execute();
@@ -108,6 +110,7 @@
         $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM fellowship_testimonials");*/
          $query = db_select('fellowship_testimonials');
          $query->fields('fellowship_testimonials');
+         $query->condition('hidden', '0');         
          $query->condition('testimonial_type', 'T');
          $query->orderBy('year', 'DESC');
          //$result = $query->extend('PagerDefault')->limit(3)->execute();

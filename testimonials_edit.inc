@@ -218,6 +218,15 @@ function fellowship_testimonials_edit_form($form, $form_state, $testimonial_id =
             "#type" => "hidden",
             "#value" => $testimonial_id
         );
+        $form["hidden"]= array(
+            "#type" => "radios",
+            "#options" => array(
+            "1" => "Yes",
+            "0" => "No",
+            ),
+            '#title' => t('Do you want to hide the testimonial from the public:'),
+            '#default_value' => $row->hidden
+        );
         $form["submit"] = array(
             "#type" => "submit",
             "#value" => "Submit"
@@ -272,7 +281,8 @@ function fellowship_testimonials_edit_form_submit($form, &$form_state) {
                  'activity' => $v['activity'],
                  'year' => $v['fellowship_year'],
                  'fellowship_task' => $v['fellowship_task'],
-                 'testimonial_video' => $v['testimonial_video']
+                 'testimonial_video' => $v['testimonial_video'],
+                 'hidden' => $v['hidden']['value']
             ));
         }
 
@@ -283,7 +293,8 @@ function fellowship_testimonials_edit_form_submit($form, &$form_state) {
                 'year' => $v['fellowship_year'],
                 'fellowship_task' => $v['fellowship_task'],
                 'testimonial_text' => $v['testimonial_text']['value'],
-                'testimonial_text_format' => $v['testimonial_text']['format']
+                'testimonial_text_format' => $v['testimonial_text']['format'],
+                'hidden' => $v['hidden']['value']
             ));
         }
             $query->condition('id', $v['testimonial_id']);
@@ -334,7 +345,7 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
             $result = $query->execute();
 
                         $headers = array(
-                "Name", "Institute", "Activity Name", "Type", "Action"
+                "Name", "Institute", "Activity Name", "Type", "Action", "Status"
             );
 
             $rows = array();
@@ -348,6 +359,12 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
               }
               else{
                 $testimonial_type = "Video";
+              }
+              if($row->hidden == 1){
+                $display_status = "Hidden to public";
+              }
+              else{
+                $display_status = "Displayed to public";
               }
                 /*$speakerquery = db_select('fellows');
             $speakerquery->fields('fellows');
@@ -363,8 +380,10 @@ function fellowship_testimonials_edit_all($testimonial_id=0) {
                     $institute,
                     $row -> activity,
                     $testimonial_type,
-                    l("Edit", "internship-experiences/edit/{$row->id}")
+                    l("Edit", "internship-experiences/edit/{$row->id}"),
                    // l("Delete", "fellowship-testimonials/delete/{$row->id}")
+                    $display_status
+
                 );
                 array_push($rows, $item);
             //}
