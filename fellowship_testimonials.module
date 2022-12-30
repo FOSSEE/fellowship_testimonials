@@ -1,4 +1,7 @@
 <?php 
+/*error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);*/
     function fellowship_testimonials_menu() {
         $items = array();
         /*$items["fellowship-testimonials"] = array(
@@ -45,7 +48,14 @@
             "access arguments" => array("manage fellowship_testimonials"),
             "type" => MENU_CALLBACK
         );
-
+        $items["animation-hackathon/vle-registration"] = array(
+            "title" => "All India 2D Animation Hackathon registration",
+            "page callback" => "animation_hackathon_vle_registration",
+            //"page arguments" => "animation_hackathon_vle_registration_form",
+            "access arguments" => array("Animation Hackathon registration"),
+            "type" => MENU_NORMAL_ITEM,
+            "file" => 'vle_registration.inc'
+        );
         return $items;
     }
 
@@ -59,6 +69,10 @@
             "title" => t("manage fellowship_testimonials"),
             'restrict access' => TRUE,
             ),
+            "Animation Hackathon registration" => array(
+                "title" => t("Animation Hackathon registration"),
+                'restrict access' => TRUE
+            )
         );
     }
     function get_video_testimonials() {
@@ -70,7 +84,6 @@
         $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM fellowship_testimonials");*/
          $query = db_select('fellowship_testimonials');
          $query->fields('fellowship_testimonials');
-         $query->condition('hidden', '0');         
          $query->condition('testimonial_type', 'V');
          $query->orderBy('year', 'DESC');
          //$result = $query->extend('PagerDefault')->limit(3)->execute();
@@ -110,7 +123,6 @@
         $result = pager_query($query, 4, 0, "SELECT COUNT(*) FROM fellowship_testimonials");*/
          $query = db_select('fellowship_testimonials');
          $query->fields('fellowship_testimonials');
-         $query->condition('hidden', '0');         
          $query->condition('testimonial_type', 'T');
          $query->orderBy('year', 'DESC');
          //$result = $query->extend('PagerDefault')->limit(3)->execute();
@@ -163,4 +175,43 @@ function fellowship_testimonials_display_form($form, $form_state){
         '#suffix' => '</div></div>'
     );
     return $form;
+}
+
+
+function _hackathon_list_of_states()
+{
+    $states = array(''=> '- Select -');
+    $states_list = db_query("SELECT state FROM state_wise_csc_academies ORDER BY state ASC");
+    while ($states_list_data = $states_list->fetchObject())
+    {
+        $states[$states_list_data->state] = $states_list_data->state;
+    }
+    return $states;
+}
+
+function _hackathon_list_of_district($state=Null)
+{
+    $district = array(''=> '- Select -');
+    if($state){
+        $district_list = db_query("SELECT district FROM state_wise_csc_academies WHERE state = :state ORDER BY district ASC", array(':state'=> $state));
+        while ($district_list_data = $district_list->fetchObject())
+        {
+            $district[$district_list_data->district] = $district_list_data->district;
+        }
+    }
+    return $district;
+}
+
+function _hackathon_list_of_cities($state=Null, $district=NULL)
+{
+    $csc_block_name = array(''=> '- Select -');
+    if($state){
+        $csc_block_name_list = db_query("SELECT block_name FROM state_wise_csc_academies WHERE state = :state AND district = :district ORDER BY block_name ASC", array(':state'=> $state, ':district' =>$district));
+        //var_dump($csc_block_name_list->rowCount());die;
+        while ($csc_block_name_list_data = $csc_block_name_list->fetchObject())
+        {
+            $csc_block_name[$csc_block_name_list_data->block_name] = $csc_block_name_list_data->block_name;
+        }
+    }
+    return $csc_block_name;
 }
