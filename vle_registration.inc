@@ -175,8 +175,7 @@ function animation_hackathon_vle_registration_form($form, &$form_state) {
         ); 
         $form["team_member_2"]["name"] = array(
             "#type" => 'textfield',
-            "#title" => t('Name of team member 2 (team lead)'),
-           	"#description" => t('This team member will be considered as the Team Lead who shall be our point of contact.'),
+            "#title" => t('Name of team member 2'),
             "#required" => TRUE,
             '#validated' => TRUE
         );
