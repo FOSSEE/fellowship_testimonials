@@ -104,6 +104,12 @@ function animation_hackathon_vle_registration_form($form, &$form_state) {
 			)
 		)
 	);
+	$form['csc_id'] = array(
+            "#type" => 'textfield',
+            "#title" => t('CSC ID'),
+            "#required" => TRUE,
+            '#maxlength' => 12
+        );
 
         $form['team_member_1'] = array(
             '#type' => 'fieldset',
@@ -150,7 +156,7 @@ function animation_hackathon_vle_registration_form($form, &$form_state) {
         );
         $form["team_member_1"]["institution"] = array(
             "#type" => "textfield",
-            "#title" => "Institution / Organisation name of team member 1",
+            "#title" => "School/ College/ Institution / Organisation name of team member 1",
             "#required" => TRUE
         );
         $form['team_size'] =array(
@@ -218,7 +224,7 @@ function animation_hackathon_vle_registration_form($form, &$form_state) {
         );
         $form["team_member_2"]["institution"] = array(
             "#type" => "textfield",
-            "#title" => "Institution / Organisation name of team member 2",
+            "#title" => "School/ College/ Institution / Organisation name of team member 2",
             "#required" => TRUE,
             '#validated' => TRUE
         );
@@ -264,13 +270,13 @@ function animation_hackathon_vle_registration_form($form, &$form_state) {
 		'Through social media' => t('Through social media'),
 		'Through a friend' => t('Through a friend'),
 		'Through school/college teacher/administration' => t('Through school/college teacher/administration'),
+		'Through Common Service Centre (CSC)' => 'Through Common Service Centre (CSC)'
 	),
 		'#required' => TRUE
 	);
 	$form['about_team'] = array(
 		'#type' => 'textarea',
 		'#title' => t('Please tell us a little more about your team.  If you are student(s), which school/college, which class/year, etc.  If you are working professional(s), what kind of work you do, etc.'),
-		'#required' => TRUE,
 	);
 	$form['term_condition'] = array(
 		'#type' => 'radios',
@@ -369,12 +375,13 @@ function animation_hackathon_vle_registration_form_submit($form, &$form_state){
 
 	if($v['team_size'] == 'Yes'){
 		$query = "INSERT INTO animation_hackathon_vle_registration 
-		(country, state, district, block_name, team_size, team_member_1_name, team_member_1_email, team_member_1_contact, team_member_1_gender, team_member_1_category, team_member_1_institution, team_member_2_name, team_member_2_email, team_member_2_contact, team_member_2_gender, team_member_2_category, team_member_2_institution, know_synfig, other_softwares_used, information_about_event, about_team, terms_and_condition, registration_timestamp) VALUES (:country, :state, :district, :block_name, :team_size, :team_member_1_name, :team_member_1_email, :team_member_1_contact, :team_member_1_gender, :team_member_1_category, :team_member_1_institution, :team_member_2_name, :team_member_2_email, :team_member_2_contact, :team_member_2_gender, :team_member_2_category, :team_member_2_institution, :know_synfig, :other_softwares_used, :information_about_event, :about_team, :terms_and_condition, :registration_timestamp)";
+		(country, state, district, block_name, csc_id, team_size, team_member_1_name, team_member_1_email, team_member_1_contact, team_member_1_gender, team_member_1_category, team_member_1_institution, team_member_2_name, team_member_2_email, team_member_2_contact, team_member_2_gender, team_member_2_category, team_member_2_institution, know_synfig, other_softwares_used, information_about_event, about_team, terms_and_condition, registration_timestamp) VALUES (:country, :state, :district, :block_name, :csc_id, :team_size, :team_member_1_name, :team_member_1_email, :team_member_1_contact, :team_member_1_gender, :team_member_1_category, :team_member_1_institution, :team_member_2_name, :team_member_2_email, :team_member_2_contact, :team_member_2_gender, :team_member_2_category, :team_member_2_institution, :know_synfig, :other_softwares_used, :information_about_event, :about_team, :terms_and_condition, :registration_timestamp)";
 		$args = array(
 			":country" => $v['country'],
 			":state" => $v['all_state'],
 			":district" => $v['district'],
 			":block_name" => $v['city'],
+			":csc_id" => $v['csc_id'],
 			":team_size" => 2,
 			":team_member_1_name" => $v['team_member_1']['name'],
 			":team_member_1_email" => $v['team_member_1']['email'],
@@ -405,12 +412,13 @@ function animation_hackathon_vle_registration_form_submit($form, &$form_state){
 	}
 	else{
 		$query = "INSERT INTO animation_hackathon_vle_registration 
-		(country, state, district, block_name, team_size, team_member_1_name, team_member_1_email, team_member_1_contact, team_member_1_gender, team_member_1_category, team_member_1_institution, team_member_2_name, team_member_2_email, team_member_2_contact, team_member_2_gender, team_member_2_category, team_member_2_institution, know_synfig, other_softwares_used, information_about_event, about_team, terms_and_condition, registration_timestamp) VALUES (:country, :state, :district, :block_name, :team_size, :team_member_1_name, :team_member_1_email, :team_member_1_contact, :team_member_1_gender, :team_member_1_category, :team_member_1_institution, :team_member_2_name, :team_member_2_email, :team_member_2_contact, :team_member_2_gender, :team_member_2_category, :team_member_2_institution, :know_synfig, :other_softwares_used, :information_about_event, :about_team, :terms_and_condition, :registration_timestamp)";
+		(country, state, district, block_name, csc_id team_size, team_member_1_name, team_member_1_email, team_member_1_contact, team_member_1_gender, team_member_1_category, team_member_1_institution, team_member_2_name, team_member_2_email, team_member_2_contact, team_member_2_gender, team_member_2_category, team_member_2_institution, know_synfig, other_softwares_used, information_about_event, about_team, terms_and_condition, registration_timestamp) VALUES (:country, :state, :district, :block_name, :csc_id, :team_size, :team_member_1_name, :team_member_1_email, :team_member_1_contact, :team_member_1_gender, :team_member_1_category, :team_member_1_institution, :team_member_2_name, :team_member_2_email, :team_member_2_contact, :team_member_2_gender, :team_member_2_category, :team_member_2_institution, :know_synfig, :other_softwares_used, :information_about_event, :about_team, :terms_and_condition, :registration_timestamp)";
 		$args = array(
 			":country" => $v['country'],
 			":state" => $v['all_state'],
 			":district" => $v['district'],
 			":block_name" => $v['city'],
+			":csc_id" => $v['csc_id'],
 			":team_size" => 1,
 			":team_member_1_name" => $v['team_member_1']['name'],
 			":team_member_1_email" => $v['team_member_1']['email'],
