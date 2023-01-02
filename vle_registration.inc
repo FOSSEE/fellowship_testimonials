@@ -337,6 +337,19 @@ function ajax_get_district_list_callback($form, $form_state)
 
 function animation_hackathon_vle_registration_form_validate($form, &$form_state) {
 	$v = $form_state['values']['team_member_2'];
+	$team_lead_email = $form_state['values']['team_member_1']['email'];
+	$query = db_select('animation_hackathon_vle_registration');
+         $query->fields('animation_hackathon_vle_registration');
+         $query->condition('team_member_1_email', $team_lead_email);
+         $result = $query->execute();
+         $row = $result->fetchObject();
+         if($row){
+         	drupal_set_message('You have already registered', 'error');
+         	drupal_goto('animation-hackathon/vle-registration');
+         }
+         /*if (!valid_email_address($form_state['values']['team_member_1']['mail'])) {
+  form_set_error('submitted][email_address', t('The email address appears to be invalid.'));
+}*/
 	if($form_state['values']['team_size'] == 'Yes'){
 		if($v['name'] == '')
 			form_set_error('team_member_2][name', 'Enter name of team member 2');
@@ -350,6 +363,9 @@ function animation_hackathon_vle_registration_form_validate($form, &$form_state)
 			form_set_error('team_member_2][category', 'Enter category of team member 2');
 		if($v['institution'] == '')
 			form_set_error('team_member_2][institution', 'Enter institution id of team member 2');
+		/*else if (!valid_email_address($v['email'])) {
+			form_set_error('team_member_2][email', 'The email address appears to be invalid.');
+		}*/
 
 	}
 }
