@@ -464,3 +464,109 @@ function animation_hackathon_vle_registration_form_submit($form, &$form_state){
 		}
 	}
 }
+
+
+function view_animation_hackathon_vle_registrations() {
+        $page_content = "";
+        
+         $query = db_select('animation_hackathon_vle_registration');
+         $query->fields('animation_hackathon_vle_registration');
+        $result = $query->execute();
+       $page_content .= "Total number of registrations: " . $result->rowCount() . "<br>Click <a href='registrations/download'>here</a> to download the CSV with participant details";
+        return $page_content;
+    }
+
+
+    function download_registration_details(){
+    global $user;
+    /* get pending submissions to be approved */
+    if ($user->uid == 0)
+    {
+        $msg = drupal_set_message(t('It is mandatory to login on this website to download the email IDs of the participants. If you are new user please create a new account first.'), 'error');
+        //drupal_goto('/pssp');
+        drupal_goto('user/login', array('query' => drupal_get_destination()));
+        return $msg;
+    }
+    $root_path = vle_registration_csv_path();
+    $my_submission_rows = array();
+    $query = db_select('animation_hackathon_vle_registration');
+    $query->fields('animation_hackathon_vle_registration');
+    $all_submissions_q = $query->execute();
+    $participants_email_id_file = $root_path . "participants.csv";
+    $fp = fopen($participants_email_id_file, "w");
+            /* making the first row */
+            $item = array(
+            	"Country",
+            	"State",
+            	"District",
+            	"Block",
+            	"CSC ID",
+            	"Team size",
+            	"Team member 1 Name",
+            	"Team member 1 Email",
+            	"Team member 1 Contact",
+            	"Team member 1 Gender",
+            	"Team member 1 Category",
+            	"Team member 1 Institution",
+            	"Team member 2 Name",
+            	"Team member 2 Email",
+            	"Team member 2 Contact",
+            	"Team member 2 Gender",
+            	"Team member 2 Category",
+            	"Team member 2 Institution",
+                "Know Synfig",
+                "Other Softwares used",
+                "How did you come to know about the event?",
+                "About team",
+                "Date of registration"
+            );
+            fputcsv($fp, $item);
+
+            while($row = $all_submissions_q->fetchObject()) {
+                $item = array(
+                    $row->country,
+                    $row->state,
+                    $row->district,
+                    $row->block_name,
+                    $row->csc_id,
+                    $row->team_size,
+                    $row->team_member_1_name,
+                    $row->team_member_1_email,
+                    $row->team_member_1_contact,
+                    $row->team_member_1_gender,
+                    $row->team_member_1_category,
+                    $row->team_member_1_institution,
+                    $row->team_member_2_name,
+                    $row->team_member_2_email,
+                    $row->team_member_2_contact,
+                    $row->team_member_2_gender,
+                    $row->team_member_2_category,
+                    $row->team_member_2_institution,
+                    $row->know_synfig,
+                    $row->other_softwares_used,
+                    $row->information_about_event,
+                    $row->about_team,
+                    date("d-m-Y", $row->registration_timestamp)
+                );
+                fputcsv($fp, $item);
+            }
+            fclose($fp);
+            if($participants_email_id_file){
+        ob_clean();
+            header("Pragma: public");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+            header('Content-Type: application/csv');
+            header('Content-disposition: attachment; filename=participant-details.csv');
+            header('Content-Length:' . filesize($participants_email_id_file));
+            header("Content-Transfer-Encoding: binary");
+            header('Expires: 0');
+            header('Pragma: no-cache');
+            readfile($participants_email_id_file);
+            /*ob_end_flush();
+            ob_clean();
+            flush();*/
+        }
+}
