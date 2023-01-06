@@ -1,7 +1,7 @@
 <?php 
-/*error_reporting(E_ALL);
+error_reporting(E_ALL);
 ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);*/
+ini_set('display_startup_errors', TRUE);
     function fellowship_testimonials_menu() {
         $items = array();
         /*$items["fellowship-testimonials"] = array(
@@ -56,6 +56,24 @@ ini_set('display_startup_errors', TRUE);*/
             "type" => MENU_NORMAL_ITEM,
             "file" => 'vle_registration.inc'
         );
+
+        $items["animation-hackathon/view/registrations"] = array(
+            "title" => "All India 2D Animation Hackathon Registered particpants",
+            "page callback" => "view_animation_hackathon_vle_registrations",
+            /*"page arguments" => "",**/
+            "access arguments" => array("Manage Animation Hackathon registration"),
+            "type" => MENU_NORMAL_ITEM,
+            "file" => 'vle_registration.inc'
+        );
+        $items["animation-hackathon/view/registrations/download"] = array(
+            "title" => "All India 2D Animation Hackathon Registered particpants",
+            "page callback" => "download_registration_details",
+            /*"page arguments" => "",**/
+            "access arguments" => array("Manage Animation Hackathon registration"),
+            "type" => MENU_NORMAL_ITEM,
+            "file" => 'vle_registration.inc'
+        );
+
         return $items;
     }
 
@@ -71,6 +89,10 @@ ini_set('display_startup_errors', TRUE);*/
             ),
             "Animation Hackathon registration" => array(
                 "title" => t("Animation Hackathon registration"),
+                'restrict access' => TRUE
+            ),
+            "Manage Animation Hackathon registration" => array(
+                "title" => t("Manage Animation Hackathon registration"),
                 'restrict access' => TRUE
             )
         );
@@ -214,4 +236,10 @@ function _hackathon_list_of_cities($state=Null, $district=NULL)
         }
     }
     return $csc_block_name;
+}
+
+
+function vle_registration_csv_path()
+{
+    return $_SERVER['DOCUMENT_ROOT'] . base_path() . 'data/';
 }
