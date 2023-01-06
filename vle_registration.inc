@@ -480,13 +480,7 @@ function view_animation_hackathon_vle_registrations() {
     function download_registration_details(){
     global $user;
     /* get pending submissions to be approved */
-    if ($user->uid == 0)
-    {
-        $msg = drupal_set_message(t('It is mandatory to login on this website to download the email IDs of the participants. If you are new user please create a new account first.'), 'error');
-        //drupal_goto('/pssp');
-        drupal_goto('user/login', array('query' => drupal_get_destination()));
-        return $msg;
-    }
+    
     $root_path = vle_registration_csv_path();
     $my_submission_rows = array();
     $query = db_select('animation_hackathon_vle_registration');
